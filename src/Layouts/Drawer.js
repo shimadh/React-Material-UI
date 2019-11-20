@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import ListItem from "@material-ui/core/ListItem";
@@ -31,22 +31,18 @@ const MainDrawer = props => {
         <List component="nav" aria-labelledby="nested-list-subheader">
 
 
-          <ListItem>
+          <ListItem button component={Link} to="/users">
             <ListItemIcon>
               <PeopleIcon />
             </ListItemIcon>
-            <NavLink to="/users">
               <ListItemText primary="Users" />
-            </NavLink>
           </ListItem>
 
-          <ListItem>
+          <ListItem button component={Link} to="/roles">
             <ListItemIcon>
               <StorefrontIcon />
             </ListItemIcon>
-            <NavLink to="/roles">
-              <ListItemText primary="Roles" />
-            </NavLink>
+            <ListItemText primary="Roles" />
           </ListItem>
 
         </List>
