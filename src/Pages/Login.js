@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import yup from "yup";
+import React from "react";
+// import yup from "yup";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -7,18 +7,20 @@ import Paper from "@material-ui/core/Paper";
 import { Formik, Form, Field } from "formik";
 import Avatar from "@material-ui/core/Avatar";
 import { useMutation } from '@apollo/react-hooks';
+import { useDispatch } from 'react-redux';
 
-import AuthContext from '../Context/AuthContext';
 import '../Styles/Login.css';
 import { TRY_LOGIN } from '../Requests/Login';
+
+import * as authAction from '../Store/authActions';
 
 
 
 const LoginPage = props => {
 
   const classes = useStyles();
-  const authContext = useContext(AuthContext);
   const [ tryLogin ] = useMutation(TRY_LOGIN);
+  const dispatch = useDispatch();
 
   return (
     
@@ -30,7 +32,6 @@ const LoginPage = props => {
               src="../Assets/AppImages/app-logo.jpg"
               className={classes.avatar}
             />
-            <p> should see context here: {authContext}</p>
           </div>
         </div>
         <Formik
@@ -45,6 +46,7 @@ const LoginPage = props => {
             });
             setSubmitting(false);
             const { signin } = data.data;
+            dispatch(authAction.authSetToken(signin.token, signin.user));
           }}
         >
           {({ values, isSubmitting }) => (
@@ -124,5 +126,7 @@ const useStyles = makeStyles(theme => ({
     height: 60
   }
 }));
+
+
 
 export default LoginPage;

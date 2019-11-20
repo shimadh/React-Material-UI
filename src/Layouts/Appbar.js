@@ -1,6 +1,4 @@
 import React from 'react';
-import { Link } from "react-router-dom";
-
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -9,7 +7,6 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import Button from '@material-ui/core/Button';
 
 const  Appbar = props => {
 
@@ -27,16 +24,14 @@ const  Appbar = props => {
 
   return (
 
-      <AppBar 
-          position="fixed"
-          className={classes.appBar}
+    <AppBar 
+        position="fixed"
+        className={classes.appBar}
         >
         <Toolbar>
-            <Typography variant="h6" className={classes.title}> 
-            Testing
-            </Typography>
-          
-          {props.isLoggedIn ?
+          <Typography variant="h6" className={classes.title}> 
+            GEMS: 2.0
+          </Typography>
           <div>
               <IconButton
                 aria-label="account of current user"
@@ -61,17 +56,14 @@ const  Appbar = props => {
                 }}
                 open={open}
                 onClose={handleClose}
-              >  
-                  <MenuItem onClick={handleClose}>Profile</MenuItem>
-                  <MenuItem onClick={handleClose}>My account</MenuItem>
-                
-              </Menu>    
-            </div> : 
-            <div>
-              <Button color="inherit" component={Link} to='/login'>Login</Button>
-            </div> }
+              >
+                <MenuItem onClick={handleClose}>Profile</MenuItem>
+                <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem onClick={()=>{}}>Log Out</MenuItem>
+              </Menu>
+            </div>
         </Toolbar>
-      </AppBar>
+    </AppBar>
 
   );
 }

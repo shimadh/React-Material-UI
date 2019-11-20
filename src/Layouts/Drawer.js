@@ -1,18 +1,18 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { makeStyles } from "@material-ui/core/styles";
+import { NavLink } from "react-router-dom";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import List from "@material-ui/core/List";
 import ListItemText from "@material-ui/core/ListItemText";
 import PeopleIcon from '@material-ui/icons/People';
-import SecurityIcon from '@material-ui/icons/Security';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import StorefrontIcon from '@material-ui/icons/Storefront';
+import DashboardIcon from '@material-ui/icons/Dashboard';
+import WatchIcon from '@material-ui/icons/Watch';
 
 
 const drawerWidth = 260;
-
 
 const MainDrawer = props => {
 
@@ -30,25 +30,23 @@ const MainDrawer = props => {
         <div className={classes.toolbar} />
         <List component="nav" aria-labelledby="nested-list-subheader">
 
-          <ListItem button component={Link} to="/users">
+
+          <ListItem>
             <ListItemIcon>
               <PeopleIcon />
             </ListItemIcon>
+            <NavLink to="/users">
               <ListItemText primary="Users" />
+            </NavLink>
           </ListItem>
 
-          <ListItem button component={Link} to="/roles">
+          <ListItem>
             <ListItemIcon>
-              <SecurityIcon />
+              <StorefrontIcon />
             </ListItemIcon>
-            <ListItemText primary="Roles"/>
-          </ListItem>
-
-          <ListItem button component={Link} to='/logout'>
-            <ListItemIcon>
-              <ExitToAppIcon />
-            </ListItemIcon>
-            <ListItemText primary="Logout" />
+            <NavLink to="/roles">
+              <ListItemText primary="Roles" />
+            </NavLink>
           </ListItem>
 
         </List>
