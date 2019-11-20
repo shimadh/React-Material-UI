@@ -1,22 +1,26 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter as Router } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "@apollo/react-hooks";
-import * as serviceWorker from "./serviceWorker";
-import App from './Layouts/App';
+
+import './Styles/index.css';
+import AuthContext from './Context/AuthContext';
+
+import Routes from './Pages';
 
 const client = new ApolloClient({
   uri: "http://beegraphpapi.aiminaabee.com/beeapi"
 });
 
-const Main = (
+const App = (
   <ApolloProvider client={client}>
-    <Router>
-      <App></App>
-    </Router>
+    <BrowserRouter>
+    <AuthContext.Provider>
+      <Routes></Routes>
+    </AuthContext.Provider>
+    </BrowserRouter>
   </ApolloProvider>
 );
 
-ReactDOM.render(Main, document.getElementById("root"));
-serviceWorker.unregister();
+ReactDOM.render(App, document.getElementById("root"));

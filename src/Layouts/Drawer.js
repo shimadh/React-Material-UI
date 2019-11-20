@@ -13,6 +13,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 const drawerWidth = 260;
 
+
 const MainDrawer = props => {
 
   const classes = useStyles();
@@ -43,7 +44,7 @@ const MainDrawer = props => {
             <ListItemText primary="Roles"/>
           </ListItem>
 
-          <ListItem button component={Link} to='/logout' onClick={() => props.logOut()}>
+          <ListItem button component={Link} to='/logout'>
             <ListItemIcon>
               <ExitToAppIcon />
             </ListItemIcon>
