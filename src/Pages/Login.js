@@ -1,132 +1,135 @@
-import React from "react";
-// import yup from "yup";
-import { makeStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import Paper from "@material-ui/core/Paper";
-import { Formik, Form, Field } from "formik";
-import Avatar from "@material-ui/core/Avatar";
+import React from 'react';
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import TextField from '@material-ui/core/TextField';
+import Link from '@material-ui/core/Link';
+import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+
+import { Formik, Form, Field } from 'formik';
 import { useMutation } from '@apollo/react-hooks';
 import { useDispatch } from 'react-redux';
-
-import '../Styles/Login.css';
 import { TRY_LOGIN } from '../Requests/Login';
-
 import * as authAction from '../Store/authActions';
-
-
+import Footer from './../Components/Common/Footer';
 
 const LoginPage = props => {
+	const classes = useStyles();
+	const [tryLogin] = useMutation(TRY_LOGIN);
+	const dispatch = useDispatch();
 
-  const classes = useStyles();
-  const [ tryLogin ] = useMutation(TRY_LOGIN);
-  const dispatch = useDispatch();
+	return (
+		<Container component='main' maxWidth='xs'>
+			<CssBaseline />
+			<div className={classes.paper}>
+				<Avatar className={classes.avatar}>
+					<LockOutlinedIcon />
+				</Avatar>
+				<Typography component='h1' variant='h5'>
+					Sign in
+				</Typography>
+				<Formik
+					initialValues={{ email: '', password: '' }}
+					onSubmit={async (values, { setSubmitting }) => {
+						setSubmitting(true);
+						const data = await tryLogin({
+							variables: {
+								email: values.email,
+								password: values.password
+							}
+						});
+						setSubmitting(false);
+						const { signin } = data.data;
+						dispatch(
+							authAction.authSetToken(signin.token, signin.user)
+						);
+					}}>
+					{({ values, isSubmitting }) => (
+						<Form className={classes.form} noValidate>
+							<Field
+								variant='outlined'
+								margin='normal'
+								required
+								fullWidth
+								id='email'
+								label='Email Address'
+								name='email'
+								as={TextField}
+								autoComplete='email'
+								autoFocus
+								className={classes.textField}
+							/>
 
-  return (
-    
-    <div className="login-container">
-      <Paper className={classes.container}>
-        <div className={classes.header}>
-          <div>
-            <Avatar
-              src="../Assets/AppImages/app-logo.jpg"
-              className={classes.avatar}
-            />
-          </div>
-        </div>
-        <Formik
-          initialValues={{ email: "", password: "" }}
-          onSubmit={async (values, { setSubmitting }) => {
-            setSubmitting(true);
-            const data = await tryLogin({
-              variables: {
-                email: values.email,
-                password: values.password
-              }
-            });
-            setSubmitting(false);
-            const { signin } = data.data;
-            dispatch(authAction.authSetToken(signin.token, signin.user));
-          }}
-        >
-          {({ values, isSubmitting }) => (
-            <Form>
-              <div>
-                <Field
-                  type="input"
-                  name="email"
-                  placeholder="Email"
-                  as={TextField}
-                  className={classes.textField}
-                />
-              </div>
-              <div>
-                <Field 
-                  type="password"
-                  name="password"
-                  placeholder="Password"
-                  as={TextField}
-                  className={classes.textField}
-                />
-              </div>
-              <div>
-                <button
-                  className={classes.button}
-                  type="submit"
-                  disabled={isSubmitting}
-                  component={Button}
-                >
-                  Login
-                </button>
-              </div>
-            </Form>
-          )}
-        </Formik>
-      </Paper>
-    </div>
-  );
+							<Field
+								variant='outlined'
+								margin='normal'
+								required
+								fullWidth
+								name='password'
+								label='Password'
+								type='password'
+								id='password'
+								autoComplete='current-password'
+								as={TextField}
+								className={classes.textField}
+							/>
+							<Button
+								type='submit'
+								fullWidth
+								variant='contained'
+								color='primary'
+								className={classes.submit}
+								disabled={isSubmitting}>
+								Sign In
+							</Button>
+						</Form>
+					)}
+				</Formik>
+				<form className={classes.form} noValidate>
+					<Grid container justify='center' alignItems='center'>
+						<Grid item>
+							<Link component='button' variant='body2'>
+								{"Don't have an account? Sign Up"}
+							</Link>
+						</Grid>
+					</Grid>
+				</form>
+			</div>
+			<Box mt={8}>
+				<Footer />
+			</Box>
+		</Container>
+	);
 };
 
 const useStyles = makeStyles(theme => ({
-  container: {
-    padding: 20,
-    width: "30%",
-    height: "40%"
-  },
-  header: {
-    flex: 1,
-    justifyContent: "center",
-    alignContent: "center",
-    alignItems: "center"
-  },
-  button: {
-    border: 1,
-    borderRadius: 3,
-    height: 40,
-    padding: "0 20px",
-    color: "#fff",
-    marginRight: 5,
-    cursor: "pointer",
-    background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
-    boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)"
-  },
-  input: {
-    display: "none"
-  },
-  textField: {
-    paddingBottom: 20,
-    width: "100%"
-  },
-  avatar: {
-    margin: 10
-  },
-  bigAvatar: {
-    margin: 10,
-    width: 60,
-    height: 60
-  }
+	'@global': {
+		body: {
+			backgroundColor: theme.palette.common.white
+		}
+	},
+	paper: {
+		marginTop: theme.spacing(8),
+		display: 'flex',
+		flexDirection: 'column',
+		alignItems: 'center'
+	},
+	avatar: {
+		margin: theme.spacing(1),
+		backgroundColor: theme.palette.secondary.main
+	},
+	form: {
+		width: '100%', // Fix IE 11 issue.
+		marginTop: theme.spacing(1)
+	},
+	submit: {
+		margin: theme.spacing(3, 0, 2)
+	}
 }));
-
-
 
 export default LoginPage;
