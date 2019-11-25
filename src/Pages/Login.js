@@ -1,27 +1,25 @@
 import React from 'react';
-import Avatar from '@material-ui/core/Avatar';
+// import yup from "yup";
+import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
+import { Formik, Form, Field } from 'formik';
+import { useApolloClient, useMutation } from '@apollo/react-hooks';
+import ProgressBar from '../Components/Common/ProgressBar';
+import SnakBar from '../Components/Common/SnakBar';
+import { TRY_LOGIN } from '../Requests/Login';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
+import Link from '@material-ui/core/Link';
+import Container from '@material-ui/core/Container';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Avatar from '@material-ui/core/Avatar';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
 
-import { Formik, Form, Field } from 'formik';
-import { useMutation } from '@apollo/react-hooks';
-import { useDispatch } from 'react-redux';
-import { TRY_LOGIN } from '../Requests/Login';
-import * as authAction from '../Store/authActions';
-import Footer from './../Components/Common/Footer';
-
-const LoginPage = props => {
+const LoginPage = ({ history }) => {
 	const classes = useStyles();
-	const [tryLogin] = useMutation(TRY_LOGIN);
-	const dispatch = useDispatch();
+	const client = useApolloClient();
+	const [tryLogin, { loading, error }] = useMutation(TRY_LOGIN);
 
 	return (
 		<Container component='main' maxWidth='xs'>
@@ -33,6 +31,7 @@ const LoginPage = props => {
 				<Typography component='h1' variant='h5'>
 					Sign in
 				</Typography>
+
 				<Formik
 					initialValues={{ email: '', password: '' }}
 					onSubmit={async (values, { setSubmitting }) => {
@@ -44,10 +43,10 @@ const LoginPage = props => {
 							}
 						});
 						setSubmitting(false);
-						const { signin } = data.data;
-						dispatch(
-							authAction.authSetToken(signin.token, signin.user)
-						);
+						const { login } = data.data;
+						localStorage.setItem('token', login.token);
+						client.writeData({ data: { isLoggedIn: true } });
+						history.push('/home');
 					}}>
 					{({ values, isSubmitting }) => (
 						<Form className={classes.form} noValidate>
@@ -59,12 +58,10 @@ const LoginPage = props => {
 								id='email'
 								label='Email Address'
 								name='email'
-								as={TextField}
 								autoComplete='email'
 								autoFocus
-								className={classes.textField}
+								as={TextField}
 							/>
-
 							<Field
 								variant='outlined'
 								margin='normal'
@@ -76,33 +73,36 @@ const LoginPage = props => {
 								id='password'
 								autoComplete='current-password'
 								as={TextField}
-								className={classes.textField}
 							/>
+							<div>
+								{loading ? <ProgressBar /> : null}
+								{error ? (
+									<SnakBar
+										message={error.message}
+										variant='error'
+									/>
+								) : null}
+							</div>
 							<Button
 								type='submit'
 								fullWidth
 								variant='contained'
 								color='primary'
-								className={classes.submit}
 								disabled={isSubmitting}>
-								Sign In
+								Login
 							</Button>
+
+							<Grid container>
+								<Grid item>
+									<Link href='#' variant='body2'>
+										{"Don't have an account? Sign Up"}
+									</Link>
+								</Grid>
+							</Grid>
 						</Form>
 					)}
 				</Formik>
-				<form className={classes.form} noValidate>
-					<Grid container justify='center' alignItems='center'>
-						<Grid item>
-							<Link component='button' variant='body2'>
-								{"Don't have an account? Sign Up"}
-							</Link>
-						</Grid>
-					</Grid>
-				</form>
 			</div>
-			<Box mt={8}>
-				<Footer />
-			</Box>
 		</Container>
 	);
 };

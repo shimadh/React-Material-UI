@@ -30,21 +30,7 @@ const Contact = () => {
 					Contact us
 				</Typography>
 				<Typography>
-					<p>
-						If you have any questions or inquiries regarding the
-						Maldives e-Government Portal, please contact us.
-						services.
-					</p>
-					<b>Telephone:</b> + (960) 3345050 <br />
-					<b>Email:</b> helpdesk@ncit.gov.mv <br />
-					<b>Facsimile:</b> + (960) 3344004 <br />
-					<p>
-						<b>Mail Address</b> <br />
-						National Centre for Information Technology <br />
-						Kalaafaanu Hingun Male’ <br />
-						20064 Maldives
-						<br />
-					</p>
+					contact us page
 				</Typography>
 			</Paper>
 

@@ -55,22 +55,10 @@ const Header = () => {
 							variant='h4'
 							color='inherit'
 							gutterBottom>
-							Maldives e-Government Portal
+							App name
 						</Typography>
 						<Typography variant='h6' color='inherit' paragraph>
-							The Maldives e-Government Portal is an initiative to
-							bring the services of the government closer to the
-							people by providing information and services in a
-							citizen- centric manner and giving consistent user
-							experience to the people of the Maldives in order to
-							enhance better quality of life.
-						</Typography>
-						<Typography variant='h6' color='inherit' paragraph>
-							Maldives e-government portal is designed to be a one
-							stop shop to government information and services at
-							public convenience which increases the availability
-							of the information and facilitates a number of
-							online government services.
+							App description
 						</Typography>
 					</div>
 				</Grid>
